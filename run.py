@@ -7,7 +7,7 @@ import torch_geometric.transforms as T
 from torch import autograd
 from tqdm import tqdm
 import numpy as np
-
+import sys
 from time import time 
 
 now = time()
@@ -31,7 +31,13 @@ args = {
         }
 }
 run = sys.argv[1]
-run_dict = args[run]
+if not run == '1':
+    run_dict = args[run]
+else:
+    now = time()
+    import os
+    while time() - now < 10:
+        print(os.system('nvidia-smi'))
 
 def train(model, epoch, train_loader):
     model.train()
@@ -68,8 +74,14 @@ def train(model, epoch, train_loader):
 letters=['a', 'b']
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-model = Net(len(letters)).to(device)
 print(device)
+
+model = Net(
+    len(letters),
+    layer_sizes=run_dict['layers'],
+    voxel_sizes=run_dict['voxels']
+    ).to(device)
+
 optimizer = torch.optim.Adam(model.parameters(), lr=0.0001)
 
 dataset = ASLDataset(letters=letters, overwrite_processing=False, transform=T.Cartesian(cat=False))
@@ -87,7 +99,7 @@ with open('test_data_idx.txt', 'w') as f:
 dl = DataLoader(data_train, 15, shuffle=True)
 train_loader = dl
 
-for epoch in range(1, 15):
+for epoch in range(1, 150):
     train(model, epoch, train_loader)
 
     torch.save(model, '/home/hussain/papers_reproduction/sign_language/model.pkl')

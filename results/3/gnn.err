@@ -1,0 +1,31 @@
+Processing...
+processing:   0%|          | 0/8400 [00:00<?, ?it/s]Traceback (most recent call last):
+  File "/home/kunet.ae/100045495/miniconda3/envs/gnn/lib/python3.8/site-packages/scipy/io/matlab/_mio.py", line 39, in _open_file
+    return open(file_like, mode), True
+FileNotFoundError: [Errno 2] No such file or directory: '/home/hussain/data/event_based_sign_lang/raw/a/a_0001.mat'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "run.py", line 87, in <module>
+    dataset = ASLDataset(letters=letters, overwrite_processing=False, transform=T.Cartesian(cat=False))
+  File "/l/proj/kuin0009/hussain/events/events_GNN/imports/ASLDataset.py", line 48, in __init__
+    super().__init__(root, transform, pre_transform, pre_filter)
+  File "/home/kunet.ae/100045495/miniconda3/envs/gnn/lib/python3.8/site-packages/torch_geometric/data/dataset.py", line 87, in __init__
+    self._process()
+  File "/home/kunet.ae/100045495/miniconda3/envs/gnn/lib/python3.8/site-packages/torch_geometric/data/dataset.py", line 170, in _process
+    self.process()
+  File "/l/proj/kuin0009/hussain/events/events_GNN/imports/ASLDataset.py", line 99, in process
+    mat = self._get_mat(raw_path)
+  File "/l/proj/kuin0009/hussain/events/events_GNN/imports/ASLDataset.py", line 146, in _get_mat
+    mat = loadmat(raw_path)
+  File "/home/kunet.ae/100045495/miniconda3/envs/gnn/lib/python3.8/site-packages/scipy/io/matlab/_mio.py", line 224, in loadmat
+    with _open_file_context(file_name, appendmat) as f:
+  File "/home/kunet.ae/100045495/miniconda3/envs/gnn/lib/python3.8/contextlib.py", line 113, in __enter__
+    return next(self.gen)
+  File "/home/kunet.ae/100045495/miniconda3/envs/gnn/lib/python3.8/site-packages/scipy/io/matlab/_mio.py", line 17, in _open_file_context
+    f, opened = _open_file(file_like, appendmat, mode)
+  File "/home/kunet.ae/100045495/miniconda3/envs/gnn/lib/python3.8/site-packages/scipy/io/matlab/_mio.py", line 45, in _open_file
+    return open(file_like, mode), True
+FileNotFoundError: [Errno 2] No such file or directory: '/home/hussain/data/event_based_sign_lang/raw/a/a_0001.mat'
+processing:   0%|          | 0/8400 [00:00<?, ?it/s]
