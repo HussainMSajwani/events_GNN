@@ -8,6 +8,30 @@ from torch import autograd
 from tqdm import tqdm
 import numpy as np
 
+from time import time 
+
+now = time()
+
+args = {
+    '2':{
+        'layers': [64, 128, 256, 512],
+        'voxels': [4, 6, 20, 32]
+        },
+    '3':{
+        'layers': [64, 128, 256],
+        'voxels': [4, 6, 20]
+        },
+    '4':{
+        'layers': [64, 128, 256, 512, 512],
+        'voxels': [4, 6, 20, 32, 32]
+        },
+    '5':{
+        'layers': [64, 128, 256, 512, 512, 1024],
+        'voxels': [4, 5, 20, 32, 32, 48]
+        }
+}
+run = sys.argv[1]
+run_dict = args[run]
 
 def train(model, epoch, train_loader):
     model.train()
