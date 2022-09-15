@@ -1,18 +1,0 @@
-Processing...
-processing:   0%|          | 0/8400 [00:00<?, ?it/s]processing:  55%|█████▍    | 4596/8400 [00:00<00:00, 45956.32it/s]processing: 100%|█████████▉| 8399/8400 [00:00<00:00, 46677.66it/s]
-Done!
-batches:   0%|          | 0/448 [00:00<?, ?it/s]batches:   0%|          | 0/448 [00:02<?, ?it/s]
-Traceback (most recent call last):
-  File "run.py", line 113, in <module>
-    train(model, epoch, train_loader)
-  File "run.py", line 68, in train
-    end_point = model(data)
-  File "/home/kunet.ae/100045495/miniconda3/envs/gnn/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1110, in _call_impl
-    return forward_call(*input, **kwargs)
-  File "/l/proj/kuin0009/hussain/events/events_GNN/imports/NVSModel.py", line 90, in forward
-    x = F.elu(self.fc1(x))
-  File "/home/kunet.ae/100045495/miniconda3/envs/gnn/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1110, in _call_impl
-    return forward_call(*input, **kwargs)
-  File "/home/kunet.ae/100045495/miniconda3/envs/gnn/lib/python3.8/site-packages/torch/nn/modules/linear.py", line 103, in forward
-    return F.linear(input, self.weight, self.bias)
-RuntimeError: CUDA error: CUBLAS_STATUS_INTERNAL_ERROR when calling `cublasSgemm( handle, opa, opb, m, n, k, &alpha, a, lda, b, ldb, &beta, c, ldc)`
