@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "run.py", line 91, in <module>
+    layer_sizes=run_dict['layers'],
+NameError: name 'run_dict' is not defined

@@ -9,6 +9,15 @@ from tqdm import tqdm
 import numpy as np
 import sys
 from time import time 
+from pathlib import Path
+
+hpc = True
+
+if hpc:
+    pwd = Path("/l/proj/kuin0009/hussain/events/events_GNN")
+else:
+    datadir = Path("/home/hussain/data/event_based_sign_lang/")
+
 
 now = time()
 
@@ -36,8 +45,9 @@ if not run == '1':
 else:
     now = time()
     import os
-    while time() - now < 10:
+    while time() - now < 20:
         print(os.system('nvidia-smi'))
+        print(os.system('nvidia-htop.py -l'))
 
 def train(model, epoch, train_loader):
     model.train()
@@ -60,7 +70,7 @@ def train(model, epoch, train_loader):
         loss = F.nll_loss(end_point, data.y)
         if np.isnan(loss.item()):
             print(og_data_x)
-            torch.save(og_data_x, '/home/hussain/papers_reproduction/sign_language/nan.pt')
+            torch.save(og_data_x, pwd / 'results' / run / 'nan.pt')
         pred = end_point.max(1)[1]
         acc = (pred.eq(data.y).sum().item())/len(data.y)
         
@@ -93,13 +103,13 @@ data_train, data_test = torch.utils.data.random_split(
 )
 
 test_data_idx = data_test.indices
-with open('test_data_idx.txt', 'w') as f:
+with open(pwd / 'results' / run /'test_data_idx.txt', 'w') as f:
     f.writelines(str(test_data_idx))
 
-dl = DataLoader(data_train, 15, shuffle=True)
+dl = DataLoader(data_train, 1, shuffle=True)
 train_loader = dl
 
 for epoch in range(1, 150):
     train(model, epoch, train_loader)
 
-    torch.save(model, '/home/hussain/papers_reproduction/sign_language/model.pkl')
+    torch.save(model, pwd / 'results' / run / 'model.pkl')
