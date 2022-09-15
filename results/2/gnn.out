@@ -1,2 +1,3 @@
 /home/kunet.ae/100045495/.conda/envs/gnn_113/bin/python
 cuda
+{'epoch': 1, 'batch': 1, 'loss': 0.4443556070327759, 'acc': 1.0}

@@ -1,18 +1,12 @@
 Processing...
-processing:   0%|          | 0/8400 [00:00<?, ?it/s]processing:  56%|█████▌    | 4696/8400 [00:00<00:00, 46952.54it/s]processing: 100%|█████████▉| 8399/8400 [00:00<00:00, 47592.94it/s]
+processing:   0%|          | 0/8400 [00:00<?, ?it/s]processing:   2%|▏         | 134/8400 [00:00<00:06, 1307.67it/s]processing:   4%|▎         | 303/8400 [00:00<00:05, 1487.64it/s]processing:   5%|▌         | 452/8400 [00:00<00:05, 1483.62it/s]processing:   7%|▋         | 601/8400 [00:00<00:05, 1477.27it/s]processing:   9%|▉         | 763/8400 [00:00<00:05, 1527.08it/s]processing:  11%|█         | 916/8400 [00:00<00:05, 1409.60it/s]processing:  14%|█▍        | 1170/8400 [00:00<00:04, 1757.09it/s]processing:  16%|█▋        | 1383/8400 [00:00<00:03, 1868.89it/s]processing:  19%|█▊        | 1573/8400 [00:01<00:04, 1516.22it/s]processing:  21%|██        | 1737/8400 [00:01<00:04, 1361.34it/s]processing:  22%|██▏       | 1884/8400 [00:01<00:05, 1238.16it/s]processing:  24%|██▍       | 2016/8400 [00:01<00:05, 1213.92it/s]processing:  26%|██▌       | 2160/8400 [00:01<00:04, 1269.26it/s]processing:  27%|██▋       | 2292/8400 [00:01<00:05, 1155.24it/s]processing:  29%|██▊       | 2412/8400 [00:02<00:08, 734.21it/s] processing:  30%|██▉       | 2507/8400 [00:02<00:08, 694.60it/s]processing:  31%|███       | 2608/8400 [00:02<00:07, 749.09it/s]processing:  33%|███▎      | 2758/8400 [00:02<00:06, 908.78it/s]processing:  34%|███▍      | 2872/8400 [00:02<00:05, 944.82it/s]processing:  35%|███▌      | 2979/8400 [00:02<00:05, 906.43it/s]processing:  37%|███▋      | 3097/8400 [00:02<00:05, 965.26it/s]processing:  39%|███▉      | 3287/8400 [00:02<00:04, 1181.60it/s]processing:  41%|████      | 3455/8400 [00:02<00:03, 1284.04it/s]processing:  44%|████▎     | 3654/8400 [00:03<00:03, 1474.85it/s]processing:  46%|████▋     | 3900/8400 [00:03<00:02, 1748.95it/s]processing:  50%|█████     | 4212/8400 [00:03<00:01, 2138.14it/s]processing:  53%|█████▎    | 4433/8400 [00:03<00:01, 2079.83it/s]processing:  55%|█████▌    | 4646/8400 [00:03<00:01, 1959.18it/s]processing:  58%|█████▊    | 4847/8400 [00:03<00:01, 1945.90it/s]processing:  60%|██████    | 5045/8400 [00:03<00:01, 1862.99it/s]processing:  62%|██████▏   | 5234/8400 [00:03<00:02, 1398.00it/s]processing:  64%|██████▍   | 5392/8400 [00:04<00:02, 1151.79it/s]processing:  66%|██████▌   | 5525/8400 [00:04<00:02, 1177.83it/s]processing:  67%|██████▋   | 5657/8400 [00:04<00:02, 1184.76it/s]processing:  69%|██████▉   | 5832/8400 [00:04<00:02, 1258.68it/s]processing:  71%|███████▏  | 6000/8400 [00:04<00:01, 1362.34it/s]processing:  73%|███████▎  | 6144/8400 [00:04<00:01, 1264.75it/s]processing:  75%|███████▌  | 6308/8400 [00:04<00:01, 1322.33it/s]processing:  77%|███████▋  | 6481/8400 [00:04<00:01, 1428.33it/s]processing:  79%|███████▉  | 6629/8400 [00:05<00:01, 1371.92it/s]processing:  82%|████████▏ | 6917/8400 [00:05<00:00, 1750.59it/s]processing:  86%|████████▌ | 7198/8400 [00:05<00:00, 2040.33it/s]processing:  89%|████████▉ | 7480/8400 [00:05<00:00, 2258.57it/s]processing:  92%|█████████▏| 7722/8400 [00:05<00:00, 2303.86it/s]processing:  97%|█████████▋| 8113/8400 [00:05<00:00, 2769.12it/s]processing: 100%|█████████▉| 8398/8400 [00:05<00:00, 2792.11it/s]processing: 100%|█████████▉| 8399/8400 [00:05<00:00, 1490.56it/s]
 Done!
-batches:   0%|          | 0/6720 [00:00<?, ?it/s]batches:   0%|          | 0/6720 [00:03<?, ?it/s]
+batches:   0%|          | 0/6720 [00:00<?, ?it/s]batches:   0%|          | 1/6720 [00:00<1:49:05,  1.03it/s]batches:   0%|          | 1/6720 [00:06<11:27:14,  6.14s/it]
 Traceback (most recent call last):
   File "run.py", line 113, in <module>
     train(model, epoch, train_loader)
-  File "run.py", line 68, in train
-    end_point = model(data)
-  File "/home/kunet.ae/100045495/.conda/envs/gnn_113/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1130, in _call_impl
-    return forward_call(*input, **kwargs)
-  File "/l/proj/kuin0009/hussain/events/events_GNN/imports/NVSModel.py", line 90, in forward
-    x = F.elu(self.fc1(x))
-  File "/home/kunet.ae/100045495/.conda/envs/gnn_113/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1130, in _call_impl
-    return forward_call(*input, **kwargs)
-  File "/home/kunet.ae/100045495/.conda/envs/gnn_113/lib/python3.8/site-packages/torch/nn/modules/linear.py", line 114, in forward
-    return F.linear(input, self.weight, self.bias)
-RuntimeError: CUDA error: CUBLAS_STATUS_EXECUTION_FAILED when calling `cublasSgemm( handle, opa, opb, m, n, k, &alpha, a, lda, b, ldb, &beta, c, ldc)`
+  File "run.py", line 80, in train
+    print({'epoch': epoch,'batch': i + 1,'loss': loss.item(),'acc': acc})
+RuntimeError: CUDA error: an illegal memory access was encountered
+CUDA kernel errors might be asynchronously reported at some other API call,so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1.

@@ -22,32 +22,25 @@ else:
 now = time()
 
 args = {
-    '2':{
+    '1':{
         'layers': [64, 128, 256, 512],
         'voxels': [4, 6, 20, 32]
         },
-    '3':{
+    '2':{
         'layers': [64, 128, 256],
         'voxels': [4, 6, 20]
         },
-    '4':{
+    '3':{
         'layers': [64, 128, 256, 512, 512],
         'voxels': [4, 6, 20, 32, 32]
         },
-    '5':{
+    '4':{
         'layers': [64, 128, 256, 512, 512, 1024],
         'voxels': [4, 5, 20, 32, 32, 48]
         }
 }
 run = sys.argv[1]
-if not run == '1':
-    run_dict = args[run]
-else:
-    now = time()
-    import os
-    while time() - now < 20:
-        print(os.system('nvidia-smi'))
-        print(os.system('nvidia-htop.py -l'))
+run_dict = args[run]
 
 def train(model, epoch, train_loader):
     model.train()
