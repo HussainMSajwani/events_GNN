@@ -18,10 +18,18 @@ from tqdm import tqdm
 
 letters_idx = {letter: idx for idx, letter in enumerate(ascii_lowercase)}
 
+hpc = True
+
+if hpc:
+    datadir = Path("/l/proj/kuin0009/hussain/events/data")
+else:
+    datadir = Path("/home/hussain/data/event_based_sign_lang/")
+
+
 class ASLDataset(Dataset):
     def __init__(
         self, 
-        root=Path("/home/hussain/data/event_based_sign_lang/"), 
+        root=datadir, 
         letters = "all", 
         beta=0.2e-2, 
         n_samples=8000, 

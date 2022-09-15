@@ -7,25 +7,34 @@ import torch_geometric.transforms as T
 from torch import autograd
 from tqdm import tqdm
 import numpy as np
-
+import sys
 from time import time 
+from pathlib import Path
+
+hpc = True
+
+if hpc:
+    pwd = Path("/l/proj/kuin0009/hussain/events/events_GNN")
+else:
+    datadir = Path("/home/hussain/data/event_based_sign_lang/")
+
 
 now = time()
 
 args = {
-    '2':{
+    '1':{
         'layers': [64, 128, 256, 512],
         'voxels': [4, 6, 20, 32]
         },
-    '3':{
+    '2':{
         'layers': [64, 128, 256],
         'voxels': [4, 6, 20]
         },
-    '4':{
+    '3':{
         'layers': [64, 128, 256, 512, 512],
         'voxels': [4, 6, 20, 32, 32]
         },
-    '5':{
+    '4':{
         'layers': [64, 128, 256, 512, 512, 1024],
         'voxels': [4, 5, 20, 32, 32, 48]
         }
@@ -54,7 +63,7 @@ def train(model, epoch, train_loader):
         loss = F.nll_loss(end_point, data.y)
         if np.isnan(loss.item()):
             print(og_data_x)
-            torch.save(og_data_x, '/home/hussain/papers_reproduction/sign_language/nan.pt')
+            torch.save(og_data_x, pwd / 'results' / run / 'nan.pt')
         pred = end_point.max(1)[1]
         acc = (pred.eq(data.y).sum().item())/len(data.y)
         
@@ -68,8 +77,14 @@ def train(model, epoch, train_loader):
 letters=['a', 'b']
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-model = Net(len(letters)).to(device)
 print(device)
+
+model = Net(
+    len(letters),
+    layer_sizes=run_dict['layers'],
+    voxel_sizes=run_dict['voxels']
+    ).to(device)
+
 optimizer = torch.optim.Adam(model.parameters(), lr=0.0001)
 
 dataset = ASLDataset(letters=letters, overwrite_processing=False, transform=T.Cartesian(cat=False))
@@ -81,13 +96,13 @@ data_train, data_test = torch.utils.data.random_split(
 )
 
 test_data_idx = data_test.indices
-with open('test_data_idx.txt', 'w') as f:
+with open(pwd / 'results' / run /'test_data_idx.txt', 'w') as f:
     f.writelines(str(test_data_idx))
 
-dl = DataLoader(data_train, 15, shuffle=True)
+dl = DataLoader(data_train, 1, shuffle=True)
 train_loader = dl
 
-for epoch in range(1, 15):
+for epoch in range(1, 150):
     train(model, epoch, train_loader)
 
-    torch.save(model, '/home/hussain/papers_reproduction/sign_language/model.pkl')
+    torch.save(model, pwd / 'results' / run / 'model.pkl')
