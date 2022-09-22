@@ -167,4 +167,7 @@ data/
 *.pt
 *.out
 *.err
+*.mat*
+imports/NVSModel_aegnn.py
+
 # End of https://www.toptal.com/developers/gitignore/api/python

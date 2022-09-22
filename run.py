@@ -11,13 +11,14 @@ import sys
 from time import time 
 from pathlib import Path
 
-hpc = True
+hpc = False
 
 if hpc:
     pwd = Path("/l/proj/kuin0009/hussain/events/events_GNN")
 else:
-    datadir = Path("/home/hussain/data/event_based_sign_lang/")
+    pwd = Path("/home/hussain/papers_reproduction/sign_language")
 
+letters=['a', 'b']
 
 now = time()
 
@@ -74,7 +75,6 @@ def train(model, epoch, train_loader):
         with open('./log', 'a') as f:
             f.writelines(f'{epoch},{i+1},{loss.item()},{acc}\n')
 
-letters=['a', 'b']
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(device)
@@ -87,7 +87,12 @@ model = Net(
 
 optimizer = torch.optim.Adam(model.parameters(), lr=0.0001)
 
-dataset = ASLDataset(letters=letters, overwrite_processing=False, transform=T.Cartesian(cat=False))
+dataset = ASLDataset(
+    letters=letters, 
+    overwrite_processing=False, 
+    transform=T.Cartesian(cat=False)
+    )
+
 n = len(dataset)
 data_train, data_test = torch.utils.data.random_split(
     dataset, 

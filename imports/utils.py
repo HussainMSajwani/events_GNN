@@ -7,7 +7,15 @@ from torch_geometric.data import Data
 from torch_geometric.nn.pool import radius_graph
 import torch_geometric.transforms as T
 
-def visualize_frames(events_df, start=0, finish=None):
+def make_image(pol, x, y):
+    img = np.zeros((H, W, 3))
+    if pol==1:
+        img[x, y, 0] = 255 #pol=1 events are drawn in red
+    elif pol==0:
+        img[x, y, 2] = 255
+    return img
+
+def visualize_frames(events_df, start=0, finish=None, return_img=False):
     H, W = 240, 180
     if finish is None:
         finish = events_df.shape[0]
@@ -17,9 +25,14 @@ def visualize_frames(events_df, start=0, finish=None):
         if pol==1:
             img[x, y, 0] = 255 #pol=1 events are drawn in red
         elif pol==0:
-            img[x, y, 2] = 255 #pol=1 events are drawn in blue
-    imshow(img)
+            img[x, y, 2] = 255
+         #pol=1 events are drawn in blue
+    if return_img:
+        return img
+    else:
+        imshow(img)
     
+
 def make_graph(events_df, beta=0.5e-6, n_samples=8000, radius=5, max_n_neighbors=32):
     ts = events_df["ts"]*beta
     st_pos = np.array([events_df["x"], events_df["y"], ts]).T

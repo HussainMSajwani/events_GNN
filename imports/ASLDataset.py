@@ -11,14 +11,15 @@ import torch
 from torch_geometric.data import Data, Dataset
 from torch_geometric.nn.pool import radius_graph
 import torch_geometric.transforms as T
-from tqdm import tqdm
+from torch_geometric.utils import remove_isolated_nodes
+from tqdm.auto import tqdm
 
 
 #torch.set_default_dtype(torch.float32) 
 
 letters_idx = {letter: idx for idx, letter in enumerate(ascii_lowercase)}
 
-hpc = True
+hpc = False
 
 if hpc:
     datadir = Path("/l/proj/kuin0009/hussain/events/data")
@@ -118,20 +119,27 @@ class ASLDataset(Dataset):
             
             y = letters_idx[letter]
 
-            data = Data(x=pol, pos=st_pos, y=y)
+            data = Data(pos=st_pos, y=y, x=pol)
             sampler = T.FixedPoints(num=self.n_samples, allow_duplicates=False, replace=False)
-            sampled = sampler(data)
-            edge_index = radius_graph(sampled["pos"], r=self.radius, max_num_neighbors=self.max_n_neighbors)
+            data = sampler(data)
+
+            edge_index = radius_graph(data['pos'], r=self.radius, max_num_neighbors=self.max_n_neighbors)
+            edge_index, _, mask = remove_isolated_nodes(edge_index=edge_index)
+            
             data.edge_index = edge_index
-            pseudo_maker = T.Cartesian(cat=False, norm=False)
-            sampled_transformed = pseudo_maker(sampled)
-            data = sampled_transformed
+
+            pseudo_maker = T.Cartesian(cat=False, norm=True)
+            data = pseudo_maker(data)
+            
+            data.x = data.x[mask]
+
+
             if self.pre_filter is not None and not self.pre_filter(data):
                 continue
 
             if self.pre_transform is not None:
                 data = self._pre_transform(data)
-            torch.save(data, save_dir)
+            torch.save(data.to("cpu"), save_dir)
             #print(type())
             #savemat(save_dir, {k: v.numpy() if type(v) == torch.Tensor else v for k,v in data.items()})
 
