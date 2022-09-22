@@ -91,7 +91,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr=0.0001)
 
 dataset = ASLDataset(
     letters=letters, 
-    overwrite_processing=False, 
+    overwrite_processing=True, 
     transform=T.Cartesian(cat=False)
     )
 

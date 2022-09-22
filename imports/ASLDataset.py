@@ -37,6 +37,7 @@ class ASLDataset(Dataset):
         radius=5, 
         max_n_neighbors=32,
         overwrite_processing=False,
+        train_val_test = "train",
         transform=None, 
         pre_transform=None, 
         pre_filter=None
@@ -53,6 +54,9 @@ class ASLDataset(Dataset):
         self.radius = radius
         self.max_n_neighbors = max_n_neighbors
         self.overwrite_processing = overwrite_processing
+        self.train_val_test = train_val_test
+
+        root = root / train_val_test
 
         super().__init__(root, transform, pre_transform, pre_filter)
 
@@ -124,9 +128,11 @@ class ASLDataset(Dataset):
             data = sampler(data)
 
             edge_index = radius_graph(data['pos'], r=self.radius, max_num_neighbors=self.max_n_neighbors)
-            edge_index, _, mask = remove_isolated_nodes(edge_index=edge_index)
-            
+            edge_index, _, mask = remove_isolated_nodes(edge_index=edge_index, num_nodes=data.x.shape[0])
+
             data.edge_index = edge_index
+            #print(mask.shape, data.x.shape, data.edge_index.shape)
+            
 
             pseudo_maker = T.Cartesian(cat=False, norm=True)
             data = pseudo_maker(data)
