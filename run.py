@@ -25,21 +25,22 @@ now = time()
 args = {
     '1':{
         'layers': [64, 128, 256, 512],
-        'voxels': [4, 6, 20, 32]
+        'voxels': [20, 30, 50, 80]
         },
     '2':{
         'layers': [64, 128, 256],
-        'voxels': [4, 6, 20]
+        'voxels': [20, 30, 50]
         },
     '3':{
         'layers': [64, 128, 256, 512, 512],
-        'voxels': [4, 6, 20, 32, 32]
+        'voxels': [20, 30, 50, 80, 80]
         },
     '4':{
         'layers': [64, 128, 256, 512, 512, 1024],
-        'voxels': [4, 5, 20, 32, 32, 48]
+        'voxels': [20, 30, 50, 80, 80, 100]
         }
 }
+
 run = sys.argv[1]
 run_dict = args[run]
 
@@ -55,25 +56,26 @@ def train(model, epoch, train_loader):
             param_group['lr'] = 0.00001
 
     for i, data in enumerate(tqdm(train_loader, desc='batches')):
-        data = data.to(device)
-        og_data_x={key: data[key].detach().clone() for key in data.keys}
-        #print(data.y)
-        optimizer.zero_grad()
-        end_point = model(data)
-        
-        loss = F.nll_loss(end_point, data.y)
-        if np.isnan(loss.item()):
-            print(og_data_x)
-            torch.save(og_data_x, pwd / 'results' / run / 'nan.pt')
-        pred = end_point.max(1)[1]
-        acc = (pred.eq(data.y).sum().item())/len(data.y)
-        
-        loss.backward()
-        optimizer.step()
-        
-        print({'epoch': epoch,'batch': i + 1,'loss': loss.item(),'acc': acc})
-        with open('./log', 'a') as f:
-            f.writelines(f'{epoch},{i+1},{loss.item()},{acc}\n')
+        with autograd.detect_anomaly():
+            data = data.to(device)
+            og_data_x={key: data[key].detach().clone() for key in data.keys}
+            #print(data.y)
+            optimizer.zero_grad()
+            end_point = model(data)
+            
+            loss = F.nll_loss(end_point, data.y)
+            if np.isnan(loss.item()):
+                print(og_data_x)
+                torch.save(og_data_x, pwd / 'results' / run / 'nan.pt')
+            pred = end_point.max(1)[1]
+            acc = (pred.eq(data.y).sum().item())/len(data.y)
+            
+            loss.backward()
+            optimizer.step()
+            
+            print({'epoch': epoch,'batch': i + 1,'loss': loss.item(),'acc': acc})
+            with open('./log', 'a') as f:
+                f.writelines(f'{epoch},{i+1},{loss.item()},{acc}\n')
 
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
