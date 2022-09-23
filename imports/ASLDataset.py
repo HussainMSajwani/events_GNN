@@ -6,6 +6,7 @@ from pathlib import Path
 from scipy.io import loadmat, savemat
 from functools import reduce
 import os.path as osp
+from glob import glob
 
 import torch
 from torch_geometric.data import Data, Dataset
@@ -55,9 +56,10 @@ class ASLDataset(Dataset):
         self.max_n_neighbors = max_n_neighbors
         self.overwrite_processing = overwrite_processing
         self.train_val_test = train_val_test
+        self.root = root
 
         root = root / train_val_test
-
+        #print(self.raw_file_names)
         super().__init__(root, transform, pre_transform, pre_filter)
 
     @property
@@ -75,7 +77,8 @@ class ASLDataset(Dataset):
         all_files = []
         for letter in self.letters:
             prefix = self.raw_dir / letter 
-            all_files += [prefix / f"{letter}_{str(sample_id).zfill(4)}.mat" for sample_id in range(1, 4201)]
+            #all_files += [prefix / f"{letter}_{str(sample_id).zfill(4)}.mat" for sample_id in range(1, 4201)]
+            all_files += [glob(str(prefix / f"{letter}_*_{i}.mat")) for i in range(self.len)]
         return all_files
 
     @property
@@ -83,7 +86,8 @@ class ASLDataset(Dataset):
         all_files = []
         for letter in self.letters:
             prefix = self.processed_dir / letter 
-            all_files += [prefix / f"{letter}_{str(sample_id).zfill(4)}.mat" for sample_id in range(1, 4201)]
+            #all_files += [prefix / f"{letter}_{str(sample_id).zfill(4)}.pt" for sample_id in range(1, 4201)]
+            all_files += [glob(str(prefix / f"{letter}_*_{i}.pt")) for i in range(self.len)] 
         return all_files
 
 
@@ -91,7 +95,7 @@ class ASLDataset(Dataset):
         letter_idx = reduce(
             list.__add__, 
             map(
-                lambda let: 4200*[let], 
+                lambda let: self.len*[let], 
                 self.letters
                 )
             )
@@ -102,7 +106,7 @@ class ASLDataset(Dataset):
         for idx, (letter, raw_path) in iter:
             # Read data from `raw_path`.
 
-            sample_id = idx % 4200 + 1
+            sample_id = idx % self.len + 1
             save_dir = self.processed_dir / letter / f"{letter}_{str(sample_id).zfill(4)}.pt"
 
             if osp.exists(save_dir) and not self.overwrite_processing:
@@ -149,9 +153,9 @@ class ASLDataset(Dataset):
             #print(type())
             #savemat(save_dir, {k: v.numpy() if type(v) == torch.Tensor else v for k,v in data.items()})
 
-
+    @property
     def len(self):
-        return len(self.processed_file_names)
+        return len(self.raw_file_names)
 
 
     def get(self, idx):

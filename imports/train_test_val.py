@@ -13,17 +13,18 @@ def random_split(x, prop=[0.80, 0.1, 0.1]):
     out = np.split(x, [train_idx, val_idx])
     return {'train': out[0], 'val': out[1], 'test': out[2]}
     
+zpad = lambda x, n: str(x).zfill(n)
 
 np.random.seed(0)
-letters = ['b']
+letters = ['a']
 datadir = Path("/home/hussain/data/event_based_sign_lang/")
-new_dir = datadir.parent / 'event_based_sign_lang (copy)'
+new_dir = datadir.parent / 'event_based_sign_lang'
 for letter in letters:
     split = random_split(np.arange(1, 4201))
     for key, part in split.items():
-        for idx in tqdm(part, desc=f'{letter}_{key}'):
+        for i, idx in enumerate(tqdm(part, desc=f'{letter}_{key}')):
             raw = datadir / 'raw' / letter / f'{letter}_{str(idx).zfill(4)}.mat'
             proc = datadir / 'processed' / letter / f'{letter}_{str(idx).zfill(4)}.pt'
             
-            shutil.copy2(raw, new_dir / key / 'raw' / letter / f'{letter}_{str(idx).zfill(4)}.mat')
-            shutil.copy2(proc, new_dir / key / 'processed' / letter / f'{letter}_{str(idx).zfill(4)}.pt')
+            shutil.move(raw, new_dir / key / 'raw' / letter / f'{letter}_{zpad(i, 4)}.mat')
+            shutil.move(proc, new_dir / key / 'processed' / letter / f'{letter}_{zpad(i, 4)}.pt')
